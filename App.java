@@ -29,9 +29,9 @@ public class App {
     int count = 0;
 
     void createStundent(){
-
         if(count<5){
             Student s = new Student();
+            s.rollNo = count+1;
             Scanner scanner = new Scanner(System.in);
             System.out.println("enter your name:");
             s.name = scanner.next();
@@ -53,12 +53,40 @@ public class App {
         }
     }
 
+    Student getStudentByRollNo(int rollno){
+        for(int i=0;i<count;i++){
+            if(studList[i].rollNo == rollno){
+                return studList[i];
+            }
+        }
+        return null;
+    }
+
+    void updateStudentName(int rollNo,String newname){
+        Student s = getStudentByRollNo(rollNo);
+        if(s == null){
+            System.out.println("no student found for roll no."+ rollNo);
+        }else{
+            s.name = newname;
+            System.out.println("name was updated successfully");
+        }
+    }
+
+    void printstudentDetails(int rollno){
+        Student s = getStudentByRollNo(rollno);
+        System.out.println("name: "+s.name+" email:"+s.email);
+    }
+
+
 
     public static void main(String[] args) {
       
         App app = new App();
-       
-
+        app.createStundent();
+        app.printstudentDetails(1);
+        app.updateStudentName(1, "Ananta");
+        app.printstudentDetails(1);
+        
 
     }
 }
