@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.Vector;
+import java.util.concurrent.CountDownLatch;
 
 class Address{
     String localarea;
@@ -13,7 +14,8 @@ class Student{
      int rollNo;
      String name;
      String email;
-     Address address = new Address();
+     Address address =new Address();
+     Course course;
 }
 
 class Course{
@@ -21,6 +23,7 @@ class Course{
      String name;
      double maxMarks;
      String description;
+     
 }
 
 class StudentManager{
@@ -54,7 +57,7 @@ class StudentManager{
         }
     }
 
-    private Student getStudentByRollNo(int rollno){
+    Student getStudentByRollNo(int rollno){
         for(int i=0;i<count;i++){
             if(studList.get(i).rollNo == rollno){
                 return studList.get(i);
@@ -91,12 +94,21 @@ class StudentManager{
         }
     }
 
+  
+
 }
 
 class CourseManager{
 
-    Vector<Course> courseList = new Vector();
-    int count = 0;
+    Vector<Course> courseList;
+    int count;
+
+    CourseManager(){
+        courseList = new Vector<>();
+        count = 0;
+    }
+
+
 
     void createCourse(){
         Course course = new Course();
@@ -112,7 +124,7 @@ class CourseManager{
         count++;
     }
 
-    private Course getCourseById(int id){
+     Course getCourseById(int id){
         for(int i=0;i<count;i++){
             if(courseList.get(i).id == id){
                 return courseList.get(i);
@@ -143,21 +155,52 @@ class CourseManager{
         }
     }
 
+    
+
+}
+
+class EnrollManager{
+
+     CourseManager cm;
+     StudentManager sm;
+
+     EnrollManager(CourseManager cm,StudentManager sm){
+            this.cm = cm;
+            this.sm = sm;
+     }
+
+      void assignCourse(int rollno,int courseId){
+               
+                Student s = sm.getStudentByRollNo(rollno);
+                s.course = cm.getCourseById(courseId);
+        }
+    
+     void unassignCourse(int rollno){
+                
+                Student s = sm.getStudentByRollNo(rollno);
+                s.course = null;
+        }
 }
 
 
 public class App {
 
-    StudentManager studentManager = new StudentManager();
-    CourseManager courseManager = new CourseManager();
+    StudentManager studentManager;
+    CourseManager courseManager ;
+    EnrollManager enrollManager ;
 
+    App(){
+        studentManager = new StudentManager();
+        courseManager = new CourseManager();
+        enrollManager = new EnrollManager(courseManager, studentManager);
+    }
 
     public static void main(String[] args) {
       
         App app = new App();
-       
-       
-        
+        app.courseManager.createCourse();
+        app.studentManager.createStundent();
+        app.enrollManager.assignCourse(1, 1);
 
     }
 }
