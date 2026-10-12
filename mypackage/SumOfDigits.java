@@ -1,9 +1,12 @@
+package mypackage;
+
 import java.util.Scanner;
 
 public class SumOfDigits {
     
     public static void main(String[] args) {
         int num;
+        ExceptionDemo e = new ExceptionDemo();
         Scanner sc = new Scanner(System.in);
         System.out.println("enter any number:");
         num = sc.nextInt();
